@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayurveda Research Methodology Assessment Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .assessment-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e3e3e3;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .competency-section {
+            border: 2px solid #e8f4fd;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            background: #f8fbff;
+        }
+
+        .competency-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .rating-labels {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .rating-scale {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .rating-scale input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+        }
+
+        .rating-scale label {
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+        .evidence-section {
+            margin-top: 15px;
+        }
+
+        .evidence-section textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #e3e3e3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .evidence-section textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        }
+
+        .results-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+
+        .score-summary {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .total-score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .score-interpretation {
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .competency-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .competency-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .competency-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .score-bar {
+            background: #e3e3e3;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+        }
+
+        .recommendations {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .recommendations h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .recommendations ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .recommendations li {
+            padding: 5px 0;
+            color: #856404;
+        }
+
+        .recommendations li:before {
+            content: "→ ";
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .rating-scale {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .rating-labels {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Ayurveda Research Methodology Assessment Tool</h1>
+            <p>Comprehensive evaluation based on NCISM curriculum learning outcomes (AYPG-RM)</p>
+        </div>
+
+        <form id="assessmentForm" class="assessment-form">
+            <div class="form-group">
+                <label for="studentName">Student Name:</label>
+                <input type="text" id="studentName" name="studentName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="institution">Institution:</label>
+                <input type="text" id="institution" name="institution" required>
+            </div>
+
+            <div class="form-group">
+                <label for="assessorName">Assessor Name:</label>
+                <input type="text" id="assessorName" name="assessorName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="assessmentDate">Assessment Date:</label>
+                <input type="date" id="assessmentDate" name="assessmentDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="semester">Semester:</label>
+                <select id="semester" name="semester" required>
+                    <option value="">Select Semester</option>
+                    <option value="1">Semester I</option>
+                    <option value="2">Semester II</option>
+                    <option value="3">Semester III</option>
+                    <option value="4">Semester IV</option>
+                </select>
+            </div>
+
+            <!-- CO1: Decision-making and research types -->
+            <div class="competency-section">
+                <div class="competency-title">CO1: Decision-making based on acquired knowledge, understanding various research types</div>
+                
+                <div class="rating-labels">
+                    <span>Needs Improvement (1)</span>
+                    <span>Developing (2)</span>
+                    <span>Proficient (3)</span>
+                    <span>Advanced (4)</span>
+                    <span>Expert (5)</span>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Identifies appropriate research methodologies:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co1_methodology" value="1"> 1</label>
+                        <label><input type="radio" name="co1_methodology" value="2"> 2</label>
+                        <label><input type="radio" name="co1_methodology" value="3"> 3</label>
+                        <label><input type="radio" name="co1_methodology" value="4"> 4</label>
+                        <label><input type="radio" name="co1_methodology" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Makes informed decisions on study designs:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co1_decisions" value="1"> 1</label>
+                        <label><input type="radio" name="co1_decisions" value="2"> 2</label>
+                        <label><input type="radio" name="co1_decisions" value="3"> 3</label>
+                        <label><input type="radio" name="co1_decisions" value="4"> 4</label>
+                        <label><input type="radio" name="co1_decisions" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co1_evidence" placeholder="Provide specific examples or evidence of the student's ability to make research decisions..."></textarea>
+                </div>
+            </div>
+
+            <!-- CO2: Literature review -->
+            <div class="competency-section">
+                <div class="competency-title">CO2: Conduct comprehensive literature review to identify research gaps</div>
+                
+                <div class="rating-group">
+                    <strong>Systematic literature search skills:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co2_search" value="1"> 1</label>
+                        <label><input type="radio" name="co2_search" value="2"> 2</label>
+                        <label><input type="radio" name="co2_search" value="3"> 3</label>
+                        <label><input type="radio" name="co2_search" value="4"> 4</label>
+                        <label><input type="radio" name="co2_search" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Identifies research gaps effectively:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co2_gaps" value="1"> 1</label>
+                        <label><input type="radio" name="co2_gaps" value="2"> 2</label>
+                        <label><input type="radio" name="co2_gaps" value="3"> 3</label>
+                        <label><input type="radio" name="co2_gaps" value="4"> 4</label>
+                        <label><input type="radio" name="co2_gaps" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co2_evidence" placeholder="Describe examples of literature reviews conducted by the student..."></textarea>
+                </div>
+            </div>
+
+            <!-- CO3: Literature evaluation -->
+            <div class="competency-section">
+                <div class="competency-title">CO3: Evaluate and appraise literature to assess research gaps</div>
+                
+                <div class="rating-group">
+                    <strong>Critical appraisal skills:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co3_appraisal" value="1"> 1</label>
+                        <label><input type="radio" name="co3_appraisal" value="2"> 2</label>
+                        <label><input type="radio" name="co3_appraisal" value="3"> 3</label>
+                        <label><input type="radio" name="co3_appraisal" value="4"> 4</label>
+                        <label><input type="radio" name="co3_appraisal" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Quality assessment of studies:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co3_quality" value="1"> 1</label>
+                        <label><input type="radio" name="co3_quality" value="2"> 2</label>
+                        <label><input type="radio" name="co3_quality" value="3"> 3</label>
+                        <label><input type="radio" name="co3_quality" value="4"> 4</label>
+                        <label><input type="radio" name="co3_quality" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co3_evidence" placeholder="Provide examples of critical appraisal work..."></textarea>
+                </div>
+            </div>
+
+            <!-- CO4: Research protocol design -->
+            <div class="competency-section">
+                <div class="competency-title">CO4: Design and conduct research protocols with appropriate study designs</div>
+                
+                <div class="rating-group">
+                    <strong>Protocol development skills:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co4_protocol" value="1"> 1</label>
+                        <label><input type="radio" name="co4_protocol" value="2"> 2</label>
+                        <label><input type="radio" name="co4_protocol" value="3"> 3</label>
+                        <label><input type="radio" name="co4_protocol" value="4"> 4</label>
+                        <label><input type="radio" name="co4_protocol" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Assessment tool development:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co4_tools" value="1"> 1</label>
+                        <label><input type="radio" name="co4_tools" value="2"> 2</label>
+                        <label><input type="radio" name="co4_tools" value="3"> 3</label>
+                        <label><input type="radio" name="co4_tools" value="4"> 4</label>
+                        <label><input type="radio" name="co4_tools" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co4_evidence" placeholder="Describe research protocols or assessment tools developed..."></textarea>
+                </div>
+            </div>
+
+            <!-- CO5: Ethics and regulations -->
+            <div class="competency-section">
+                <div class="competency-title">CO5: Implement and monitor ethical and regulatory guidelines</div>
+                
+                <div class="rating-group">
+                    <strong>Understanding of research ethics:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co5_ethics" value="1"> 1</label>
+                        <label><input type="radio" name="co5_ethics" value="2"> 2</label>
+                        <label><input type="radio" name="co5_ethics" value="3"> 3</label>
+                        <label><input type="radio" name="co5_ethics" value="4"> 4</label>
+                        <label><input type="radio" name="co5_ethics" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Regulatory compliance:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co5_compliance" value="1"> 1</label>
+                        <label><input type="radio" name="co5_compliance" value="2"> 2</label>
+                        <label><input type="radio" name="co5_compliance" value="3"> 3</label>
+                        <label><input type="radio" name="co5_compliance" value="4"> 4</label>
+                        <label><input type="radio" name="co5_compliance" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co5_evidence" placeholder="Examples of ethical considerations in research work..."></textarea>
+                </div>
+            </div>
+
+            <!-- CO6: Research dissemination -->
+            <div class="competency-section">
+                <div class="competency-title">CO6: Prepare and disseminate research findings through publications</div>
+                
+                <div class="rating-group">
+                    <strong>Scientific writing skills:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co6_writing" value="1"> 1</label>
+                        <label><input type="radio" name="co6_writing" value="2"> 2</label>
+                        <label><input type="radio" name="co6_writing" value="3"> 3</label>
+                        <label><input type="radio" name="co6_writing" value="4"> 4</label>
+                        <label><input type="radio" name="co6_writing" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Publication ethics adherence:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co6_publication" value="1"> 1</label>
+                        <label><input type="radio" name="co6_publication" value="2"> 2</label>
+                        <label><input type="radio" name="co6_publication" value="3"> 3</label>
+                        <label><input type="radio" name="co6_publication" value="4"> 4</label>
+                        <label><input type="radio" name="co6_publication" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co6_evidence" placeholder="Publications, manuscripts, or reports prepared..."></textarea>
+                </div>
+            </div>
+
+            <!-- CO7: Presentation skills -->
+            <div class="competency-section">
+                <div class="competency-title">CO7: Deliver impactful presentations demonstrating clarity and analysis</div>
+                
+                <div class="rating-group">
+                    <strong>Presentation delivery:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co7_delivery" value="1"> 1</label>
+                        <label><input type="radio" name="co7_delivery" value="2"> 2</label>
+                        <label><input type="radio" name="co7_delivery" value="3"> 3</label>
+                        <label><input type="radio" name="co7_delivery" value="4"> 4</label>
+                        <label><input type="radio" name="co7_delivery" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Professional communication:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co7_communication" value="1"> 1</label>
+                        <label><input type="radio" name="co7_communication" value="2"> 2</label>
+                        <label><input type="radio" name="co7_communication" value="3"> 3</label>
+                        <label><input type="radio" name="co7_communication" value="4"> 4</label>
+                        <label><input type="radio" name="co7_communication" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co7_evidence" placeholder="Presentations delivered, conferences attended..."></textarea>
+                </div>
+            </div>
+
+            <!-- CO8: Information technology -->
+            <div class="competency-section">
+                <div class="competency-title">CO8: Utilize information technology tools to enhance research capabilities</div>
+                
+                <div class="rating-group">
+                    <strong>Technology proficiency:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co8_technology" value="1"> 1</label>
+                        <label><input type="radio" name="co8_technology" value="2"> 2</label>
+                        <label><input type="radio" name="co8_technology" value="3"> 3</label>
+                        <label><input type="radio" name="co8_technology" value="4"> 4</label>
+                        <label><input type="radio" name="co8_technology" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Data management skills:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co8_data" value="1"> 1</label>
+                        <label><input type="radio" name="co8_data" value="2"> 2</label>
+                        <label><input type="radio" name="co8_data" value="3"> 3</label>
+                        <label><input type="radio" name="co8_data" value="4"> 4</label>
+                        <label><input type="radio" name="co8_data" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co8_evidence" placeholder="Software tools used, databases managed..."></textarea>
+                </div>
+            </div>
+
+            <!-- CO9: Advanced instrumentation -->
+            <div class="competency-section">
+                <div class="competency-title">CO9: Apply advanced instrumentation and modern techniques</div>
+                
+                <div class="rating-group">
+                    <strong>Instrumentation knowledge:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co9_instrumentation" value="1"> 1</label>
+                        <label><input type="radio" name="co9_instrumentation" value="2"> 2</label>
+                        <label><input type="radio" name="co9_instrumentation" value="3"> 3</label>
+                        <label><input type="radio" name="co9_instrumentation" value="4"> 4</label>
+                        <label><input type="radio" name="co9_instrumentation" value="5"> 5</label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <strong>Research quality enhancement:</strong>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="co9_quality" value="1"> 1</label>
+                        <label><input type="radio" name="co9_quality" value="2"> 2</label>
+                        <label><input type="radio" name="co9_quality" value="3"> 3</label>
+                        <label><input type="radio" name="co9_quality" value="4"> 4</label>
+                        <label><input type="radio" name="co9_quality" value="5"> 5</label>
+                    </div>
+                </div>
+
+                <div class="evidence-section">
+                    <label><strong>Evidence/Examples:</strong></label>
+                    <textarea name="co9_evidence" placeholder="Advanced techniques used, instrumentation experience..."></textarea>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button type="button" class="btn" onclick="calculateAssessment()">Generate Assessment Report</button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+            </div>
+        </form>
+
+        <div id="resultsSection" class="results-section">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">Assessment Results</h2>
+            
+            <div class="score-summary">
+                <div id="totalScore" class="total-score">0%</div>
+                <div id="scoreInterpretation" class="score-interpretation">Assessment Incomplete</div>
+            </div>
+
+            <div id="competencyBreakdown" class="competency-breakdown"></div>
+            
+            <div id="recommendations" class="recommendations">
+                <h3>Recommendations for Improvement</h3>
+                <ul id="recommendationsList"></ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button type="button" class="btn" onclick="downloadReport()">Download PDF Report</button>
+                <button type="button" class="btn btn-secondary" onclick="printReport()">Print Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date as default
+        document.getElementById('assessmentDate').valueAsDate = new Date();
+
+        function calculateAssessment() {
+            const form = document.getElementById('assessmentForm');
+            const formData = new FormData(form);
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Check if all competencies are rated
+            const competencies = ['co1', 'co2', 'co3', 'co4', 'co5', 'co6', 'co7', 'co8', 'co9'];
+            let allRated = true;
+            
+            competencies.forEach(co => {
+                const inputs = form.querySelectorAll(`input[name^="${co}_"]:checked`);
+                if (inputs.length === 0) {
+                    allRated = false;
+                }
+            });
+
+            if (!allRated) {
+                alert('Please rate all competencies before generating the report.');
+                return;
+            }
+
+            // Calculate scores
+            const scores = calculateScores(formData);
+            displayResults(scores, formData);
+            
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function calculateScores(formData) {
+            const competencies = {
+                'CO1': { name: 'Decision-making & Research Types', fields: ['co1_methodology', 'co1_decisions'] },
+                'CO2': { name: 'Literature Review', fields: ['co2_search', 'co2_gaps'] },
+                'CO3': { name: 'Literature Evaluation', fields: ['co3_appraisal', 'co3_quality'] },
+                'CO4': { name: 'Research Protocol Design', fields: ['co4_protocol', 'co4_tools'] },
+                'CO5': { name: 'Ethics & Regulations', fields: ['co5_ethics', 'co5_compliance'] },
+                'CO6': { name: 'Research Dissemination', fields: ['co6_writing', 'co6_publication'] },
+                'CO7': { name: 'Presentation Skills', fields: ['co7_delivery', 'co7_communication'] },
+                'CO8': { name: 'Information Technology', fields: ['co8_technology', 'co8_data'] },
+                'CO9': { name: 'Advanced Instrumentation', fields: ['co9_instrumentation', 'co9_quality'] }
+            };
+
+            const scores = {};
+            let totalPoints = 0;
+            let maxPoints = 0;
+
+            Object.keys(competencies).forEach(co => {
+                const competency = competencies[co];
+                let competencyTotal = 0;
+                let competencyMax = 0;
+
+                competency.fields.forEach(field => {
+                    const value = parseInt(formData.get(field)) || 0;
+                    competencyTotal += value;
+                    competencyMax += 5;
+                });
+
+                scores[co] = {
+                    name: competency.name,
+                    score: competencyTotal,
+                    maxScore: competencyMax,
+                    percentage: Math.round((competencyTotal / competencyMax) * 100)
+                };
+
+                totalPoints += competencyTotal;
+                maxPoints += competencyMax;
+            });
+
+            const overallPercentage = Math.round((
